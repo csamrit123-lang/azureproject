@@ -173,6 +173,13 @@
 										}
 									}
 								},
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "Azure_DataLake_lnk",
+										"type": "LinkedServiceReference"
+									},
+									"path": "archive"
+								},
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",

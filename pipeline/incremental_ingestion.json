@@ -256,7 +256,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bornze",
-										"folder": "cdc",
+										"folder": {
+											"value": "@{pipeline().parameters.table}_cdc",
+											"type": "Expression"
+										},
 										"file": "empty.json"
 									}
 								}

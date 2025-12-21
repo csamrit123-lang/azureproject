@@ -38,7 +38,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{pipeline().parameters.schema}.@{pipeline().parameters.table} where @{pipeline().parameters.cdc_col}>'@{if(empty(pipeline().parameters.form_date),activity('Last_cdc').output.value[0].cdc,pipeline().parameters.form_date)}'",
+										"value": "select * from @{item().schema}.@{item().table} where @{item().cdc_col}>'@{if(empty(item().form_date),activity('Last_cdc').output.value[0].cdc,item().form_date)}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -117,7 +117,7 @@
 									"parameters": {
 										"container": "bornze",
 										"folder": {
-											"value": "@{pipeline().parameters.table}_cdc",
+											"value": "@{item().table}_cdc",
 											"type": "Expression"
 										},
 										"file": "cdc.json"
@@ -264,7 +264,7 @@
 												"parameters": {
 													"container": "bornze",
 													"folder": {
-														"value": "@{pipeline().parameters.table}_cdc",
+														"value": "@{item().table}_cdc",
 														"type": "Expression"
 													},
 													"file": "empty.json"
@@ -278,7 +278,7 @@
 												"parameters": {
 													"container": "bornze",
 													"folder": {
-														"value": "@{pipeline().parameters.table}_cdc",
+														"value": "@{item().table}_cdc",
 														"type": "Expression"
 													},
 													"file": "cdc.json"
@@ -307,7 +307,7 @@
 												{
 													"type": "Query",
 													"text": {
-														"value": "select max(@{pipeline().parameters.cdc_col}) as max_date from @{pipeline().parameters.schema}.@{pipeline().parameters.table}",
+														"value": "select max(@{item().cdc_col}) as max_date from @{item().schema}.@{item().table}",
 														"type": "Expression"
 													}
 												}

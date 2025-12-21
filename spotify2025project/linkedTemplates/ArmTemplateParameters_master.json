@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "spotify2025project"
+		},
+		"Azure_DataLake_lnk_accountKey": {
+			"value": ""
+		},
+		"Azure_Sql_link_password": {
+			"value": ""
+		},
+		"Azure_DataLake_lnk_properties_typeProperties_url": {
+			"value": "https://storagespotifyproject20.dfs.core.windows.net/"
+		},
+		"Azure_Sql_link_properties_typeProperties_server": {
+			"value": "azureprojectserveramrit.database.windows.net"
+		},
+		"Azure_Sql_link_properties_typeProperties_database": {
+			"value": "azureprojectamritdb"
+		},
+		"Azure_Sql_link_properties_typeProperties_userName": {
+			"value": "adminamrit"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

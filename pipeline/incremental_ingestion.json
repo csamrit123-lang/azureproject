@@ -5,6 +5,8 @@
 			{
 				"name": "AzureSQLToLake",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -59,7 +61,12 @@
 					},
 					"dataset": {
 						"referenceName": "Json_dynamic_dataset",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze",
+							"folder": "cdc",
+							"file": "cdc.json"
+						}
 					},
 					"firstRowOnly": false
 				}

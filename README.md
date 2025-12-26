@@ -27,6 +27,8 @@ In the Silver layer:
 - Basic transformations are applied via a **utils class**
 - Transformed data is written into **Silver tables**
 
+  ![Silver Layer]https://github.com/csamrit123-lang/azureproject/blob/main/adb_pipeline_3.png
+
 ---
 
 ### **3. Gold Layer**

@@ -1,11 +1,55 @@
-# Azure Data Engineer Project:
-Adf Pipeline:
-pipeline_1.png
+# Spotify Data Pipeline Project
 
-In this project, I worked with the Spotify dataset and implemented an incremental data loading pipeline using Azure Data Factory (ADF). The source system was Azure SQL Database, which contained multiple tables. I leveraged high watermark concepts to handle incremental loads and also implemented logic to manage backfill scenarios in ADF.
+## Project Overview
+This project implements an **incremental ETL pipeline** for the Spotify dataset using **Databricks**, **Azure Data Factory (ADF)**, and **Azure SQL Database**. The pipeline follows a **Bronze → Silver → Gold** architecture with **streaming**, **incremental loads**, and **CDC (Change Data Capture)**.  
 
-The data from the source was loaded into the Bronze layer in Parquet format, and I used Unity Catalog to create structured schemas for the Silver and Gold layers. In the Silver layer, I processed the data using streaming reads. A separate utils class was created to perform basic transformations, which was then called in the main notebook to maintain modularity. After transformations, the data was written into the Silver tables.
+Key features:
+- Incremental data loading with **high watermark** logic
+- Handling **backfill scenarios** in ADF
+- Data stored in **Parquet format** in the Bronze layer
+- **Unity Catalog** schemas for Silver and Gold layers
+- Streaming reads in Silver, with modular transformations using **utils class**
+- Dynamic SQL generation using **Jinja**
+- CDC and **SCD Type 2** implementation in Gold layer using **Delta Live Tables**
 
-To automate query generation, I used the Jinja library, enabling dynamic SQL queries without manual intervention. In the Gold layer, I implemented CDC (Change Data Capture) using Delta Live Tables, and applied SCD Type 2 methodology for historical tracking and data versioning.
+---
 
-Overall, this project demonstrates an end-to-end ETL/ELT pipeline on Databricks with incremental loads, streaming processing, modular transformations, and CDC implementation, following bronze-silver-gold architecture.
+## Data Pipeline Architecture
+
+### **1. Bronze Layer**
+The raw data from **Azure SQL DB** is loaded incrementally into the Bronze layer in **Parquet format**.
+
+![Bronze Layer](images/bronze_layer.png)
+
+---
+
+### **2. Silver Layer**
+In the Silver layer:
+- Data is read using **streaming**
+- Basic transformations are applied via a **utils class**
+- Transformed data is written into **Silver tables**
+
+![Silver Layer](images/silver_layer.png)
+
+---
+
+### **3. Gold Layer**
+The Gold layer applies:
+- **CDC (Change Data Capture)**
+- **SCD Type 2** for historical tracking using **Delta Live Tables**
+
+![Gold Layer](images/gold_layer.png)
+
+---
+
+## Workflow with Azure Data Factory
+- Multiple tables from Azure SQL DB are ingested
+- **High watermark logic** ensures incremental loading
+- **Backfill handling** is implemented for historical data
+- ADF pipelines orchestrate the end-to-end flow
+
+![ADF Pipeline](images/adf_pipeline.png)
+
+---
+
+## Code Structure

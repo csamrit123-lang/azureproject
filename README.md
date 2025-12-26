@@ -19,9 +19,6 @@ Key features:
 ### **1. Bronze Layer**
 The raw data from **Azure SQL DB** is loaded incrementally into the Bronze layer in **Parquet format**.
 
-![Bronze Layer](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_1.png)
-![Bronze Layer](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_2.png)
-
 ---
 
 ### **2. Silver Layer**
@@ -29,8 +26,6 @@ In the Silver layer:
 - Data is read using **streaming**
 - Basic transformations are applied via a **utils class**
 - Transformed data is written into **Silver tables**
-
-![Silver Layer](images/silver_layer.png)
 
 ---
 
@@ -49,8 +44,8 @@ The Gold layer applies:
 - **Backfill handling** is implemented for historical data
 - ADF pipelines orchestrate the end-to-end flow
 
-![ADF Pipeline](images/adf_pipeline.png)
+![ADF Pipeline](![Bronze Layer](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_1.png))
+![ADF Pipeline](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_2.png)
 
 ---
 
-## Code Structure

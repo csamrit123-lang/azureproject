@@ -34,7 +34,7 @@ The Gold layer applies:
 - **CDC (Change Data Capture)**
 - **SCD Type 2** for historical tracking using **Delta Live Tables**
 
-![Gold Layer](images/gold_layer.png)
+![Gold Layer]([images/gold_layer.png](https://github.com/csamrit123-lang/azureproject/blob/main/adb_gold_pipeline_4.png))
 
 ---
 

@@ -20,6 +20,7 @@ Key features:
 The raw data from **Azure SQL DB** is loaded incrementally into the Bronze layer in **Parquet format**.
 
 ![Bronze Layer](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_1.png)
+![Bronze Layer](https://github.com/csamrit123-lang/azureproject/blob/main/pipeline_2.png)
 
 ---
 

@@ -1,5 +1,6 @@
 # Azure Data Engineer Project:
-
+Adf Pipeline:
+pipeline_1.png
 
 In this project, I worked with the Spotify dataset and implemented an incremental data loading pipeline using Azure Data Factory (ADF). The source system was Azure SQL Database, which contained multiple tables. I leveraged high watermark concepts to handle incremental loads and also implemented logic to manage backfill scenarios in ADF.
 

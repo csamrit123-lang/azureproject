@@ -90,7 +90,7 @@
 		"parameters": {
 			"file_name": {
 				"type": "array",
-				"defaultValue": "[{'file_name':DimAirline.csv'},{'file_name':'DimFlight.csv'},{'file_name':'DimPassenger.csv'}]"
+				"defaultValue": "[{'file_name':'DimAirline.csv'},{'file_name':'DimFlight.csv'},{'file_name':'DimPassenger.csv'}]"
 			}
 		},
 		"annotations": []

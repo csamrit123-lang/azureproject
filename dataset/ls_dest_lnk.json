@@ -1,0 +1,23 @@
+{
+	"name": "ls_dest_lnk",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure_DataLake_lnk",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "onpremise",
+				"fileSystem": "bronzedata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

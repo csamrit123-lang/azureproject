@@ -1,0 +1,15 @@
+{
+	"name": "Rest_Resource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_RestService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "csamrit123-lang/ADF_project/refs/heads/main/DimAirport.json"
+		},
+		"schema": []
+	}
+}

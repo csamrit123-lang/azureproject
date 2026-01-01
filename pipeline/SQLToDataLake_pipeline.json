@@ -31,7 +31,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select * from dbo.FactBookings where booking_date>@{activity('Lookup for retrive the value from lastloadfile').output.value[0].lastload} and booking_date<=@{variables('v_now')}",
+							"value": "select * from dbo.FactBookings where booking_date>'@{activity('Lookup for retrive the value from lastloadfile').output.value[0].lastload}' and booking_date<='@{variables('v_now')}'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -132,7 +132,7 @@
 				}
 			},
 			{
-				"name": "Copy data for find the max data",
+				"name": "Copy data for update the lastload file",
 				"type": "Copy",
 				"dependsOn": [
 					{

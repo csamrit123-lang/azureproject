@@ -136,7 +136,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Copy data for sql to blob",
+						"activity": "Script activity to get the max",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -152,19 +152,24 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
+						"type": "JsonSource",
 						"additionalColumns": [
 							{
 								"name": "lastload",
 								"value": {
-									"value": "aaaaaaa",
+									"value": "@activity('Script activity to get the max').output.max_date",
 									"type": "Expression"
 								}
 							}
 						],
-						"sqlReaderQuery": "\nselect max(booking_date) as max_date from dbo.FactBookings",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
 					},
 					"sink": {
 						"type": "JsonSink",
@@ -179,12 +184,6 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Azure_Sql_dataset",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
 						"referenceName": "Json_dynamic_dataset",
 						"type": "DatasetReference",
 						"parameters": {
@@ -193,14 +192,25 @@
 							"file": "empty.json"
 						}
 					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_dynamic_dataset",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "monitor",
+							"folder": "lastload",
+							"file": "lastload"
+						}
+					}
 				]
 			},
 			{
-				"name": "Script1",
+				"name": "Script activity to get the max",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Copy data for find the max data",
+						"activity": "Copy data for sql to blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -221,7 +231,11 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": "Query"
+							"type": "Query",
+							"text": {
+								"value": "\nselect max(booking_date) as max_date from dbo.FactBookings",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"

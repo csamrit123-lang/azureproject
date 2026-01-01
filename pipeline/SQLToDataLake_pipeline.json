@@ -157,7 +157,7 @@
 							{
 								"name": "lastload",
 								"value": {
-									"value": "@activity('Script activity to get the max').output.max_date",
+									"value": "@activity('Script activity to get the max').output.resultSets[0].rows[0].max_date",
 									"type": "Expression"
 								}
 							}

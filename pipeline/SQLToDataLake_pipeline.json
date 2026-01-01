@@ -91,7 +91,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"folder": "sqlload",
-										"filename": "@concat('flight.csv','_',utcNow())"
+										"filename": {
+											"value": "@variables('file_nme')",
+											"type": "Expression"
+										}
 									}
 								},
 								"logStorageSettings": {
@@ -286,7 +289,7 @@
 						"parameters": {
 							"folder": "sqlload",
 							"filename": {
-								"value": "@concat('flight.csv','_',utcNow())",
+								"value": "@variables('file_nme')",
 								"type": "Expression"
 							}
 						}
@@ -297,6 +300,10 @@
 		"variables": {
 			"v_now": {
 				"type": "String"
+			},
+			"file_nme": {
+				"type": "String",
+				"defaultValue": "@concat('flight.csv','_',utcNow())"
 			}
 		},
 		"annotations": []

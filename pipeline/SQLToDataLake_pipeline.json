@@ -5,11 +5,15 @@
 			{
 				"name": "Copy data for sql to blob",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set variable to check the currebt time",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Lookup for retrive the value from lastloadfile",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +31,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select * from dbo.FactBookings where booking_date>@{activity('Lookup for retrive the value from lastloadfile').output.lastload} and booking_date<=@{variables('v_now')}",
+							"value": "select * from dbo.FactBookings where booking_date>@{activity('Lookup for retrive the value from lastloadfile').output.value[0].lastload} and booking_date<=@{variables('v_now')}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -68,8 +72,6 @@
 			{
 				"name": "Set variable to check the currebt time",
 				"type": "SetVariable",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,

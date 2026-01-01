@@ -69,7 +69,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(activity('Copy data for sql to blob').output.dataWritten,0)",
+						"value": "@greater(activity('Copy data for sql to blob').output.rowsCopied,0)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [

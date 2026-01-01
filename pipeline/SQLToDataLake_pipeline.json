@@ -38,12 +38,14 @@
 						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -64,8 +66,15 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Parquet_dynamic_dataset",
-						"type": "DatasetReference"
+						"referenceName": "ls_DelimitedText",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "sqlload",
+							"filename": {
+								"value": "@concat('flight.csv','_',utcNow())",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -120,6 +129,102 @@
 						}
 					},
 					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Copy data for find the max data",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data for sql to blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"additionalColumns": [
+							{
+								"name": "lastload",
+								"value": {
+									"value": "aaaaaaa",
+									"type": "Expression"
+								}
+							}
+						],
+						"sqlReaderQuery": "\nselect max(booking_date) as max_date from dbo.FactBookings",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Azure_Sql_dataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_dynamic_dataset",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "monitor",
+							"folder": "emptyjson",
+							"file": "empty.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data for find the max data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "Azure_Sql_link",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],

@@ -106,7 +106,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Airline",
-					"value": "'DimAirline.csv'"
+					"value": "DimAirline.csv"
 				}
 			},
 			{
@@ -127,7 +127,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "DimFlight",
-					"value": "'DimFlight.csv'"
+					"value": "DimFlight.csv"
 				}
 			},
 			{
@@ -148,7 +148,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "DimPassenger",
-					"value": "'DimPassenger.csv'"
+					"value": "DimPassenger.csv"
 				}
 			},
 			{
@@ -169,7 +169,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Factbooking",
-					"value": "'flight.csv_2026-01-02T14:06:29.1740793Z'\n"
+					"value": "flight.csv_2026-01-02T14:06:29.1740793Z\n"
 				}
 			},
 			{
@@ -190,7 +190,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "onpremise",
-					"value": "'onpremise'"
+					"value": "onpremise"
 				}
 			},
 			{
@@ -211,7 +211,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "sqlload",
-					"value": "'sqlload'"
+					"value": "sqlload"
 				}
 			},
 			{
@@ -232,7 +232,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "DimAirport",
-					"value": "'DimAirpot.json'\n"
+					"value": "DimAirpot.json\n"
 				}
 			},
 			{

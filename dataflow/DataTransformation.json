@@ -44,6 +44,9 @@
 			"transformations": [
 				{
 					"name": "derivedColumnCountry"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -93,7 +96,15 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> DimAirport",
-				"DimAirline derive(country = upper(country)) ~> derivedColumnCountry"
+				"DimAirline derive(country = upper(country)) ~> derivedColumnCountry",
+				"Dimflight select(mapColumn(",
+				"          flight_id,",
+				"          flight_number,",
+				"          departure_timestamp = departure_time,",
+				"          arrival_time",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}

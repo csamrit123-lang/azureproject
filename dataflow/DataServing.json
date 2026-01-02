@@ -26,7 +26,15 @@
 					"name": "FactBooking"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "Azure_DataLake_lnk",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sinkGold"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Airlinejoin"
@@ -38,7 +46,13 @@
 					"name": "aggregation"
 				},
 				{
-					"name": "window1"
+					"name": "RankingData"
+				},
+				{
+					"name": "filterTop5"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -100,9 +114,30 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 aggregate(groupBy(airline_name),",
 				"     Total_Sales = sum(ticket_cost)) ~> aggregation",
-				"aggregation window(over(Total_Sales),",
-				"     asc(airline_name, true),",
-				"     D_Rnk = rowNumber()) ~> window1"
+				"aggregation window(asc(airline_name, true),",
+				"     D_Rnk = rowNumber()) ~> RankingData",
+				"RankingData filter(D_Rnk<=5) ~> filterTop5",
+				"filterTop5 alterRow(insertIf(1==1)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delta',",
+				"     fileSystem: 'golddata',",
+				"     folderPath: 'BusinessView',",
+				"     overwrite: true,",
+				"     mergeSchema: false,",
+				"     autoCompact: false,",
+				"     optimizedWrite: false,",
+				"     vacuum: 0,",
+				"     deletable: false,",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     upsertable: false,",
+				"     keys:['airline_name'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkGold"
 			]
 		}
 	}

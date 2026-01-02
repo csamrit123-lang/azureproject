@@ -41,7 +41,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumnforupper"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          airline_id as short,",
@@ -88,7 +92,8 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> DimAirport"
+				"     documentForm: 'documentPerLine') ~> DimAirport",
+				"DimAirline derive(country = upper(country)) ~> derivedColumnforupper"
 			]
 		}
 	}

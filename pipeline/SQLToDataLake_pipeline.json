@@ -1,87 +1,26 @@
 {
-	"name": "incremental_ingestion",
+	"name": "SQLToDataLake_pipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "AzureSQLToLake",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Last_cdc",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "current",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"name": "Set variable to check the currebt time",
+				"type": "SetVariable",
+				"dependsOn": [],
 				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "select * from @{pipeline().parameters.schema}.@{pipeline().parameters.table} where @{pipeline().parameters.cdc_col}>'@{if(empty(pipeline().parameters.form_date),activity('Last_cdc').output.value[0].cdc,pipeline().parameters.form_date)}'",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "ParquetSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "ParquetWriteSettings"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
+					"variableName": "v_now",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
 					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Azure_Sql_dataset",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Parquet_dynamic_dataset",
-						"type": "DatasetReference",
-						"parameters": {
-							"container": "bornze",
-							"folder": {
-								"value": "@pipeline().parameters.table",
-								"type": "Expression"
-							},
-							"file": {
-								"value": "@concat(pipeline().parameters.table,'_',variables('current'))",
-								"type": "Expression"
-							}
-						}
-					}
-				]
+				}
 			},
 			{
-				"name": "Last_cdc",
+				"name": "Lookup for retrive the value from lastloadfile",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -108,40 +47,20 @@
 						"referenceName": "Json_dynamic_dataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "bornze",
-							"folder": {
-								"value": "@{pipeline().parameters.table}_cdc",
-								"type": "Expression"
-							},
-							"file": "cdc.json"
+							"container": "monitor",
+							"folder": "lastload",
+							"file": "lastload"
 						}
 					},
 					"firstRowOnly": false
 				}
 			},
 			{
-				"name": "current",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "current",
-					"value": {
-						"value": "@utcNow()",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Ifincrementaldata",
+				"name": "If Condition to remove the empty file",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "AzureSQLToLake",
+						"activity": "Copy data for sql to blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -150,12 +69,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(activity('AzureSQLToLake').output.rowsCopied, 0)",
+						"value": "@greater(activity('Copy data for sql to blob').output.rowsCopied,0)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
 						{
-							"name": "Delete empty files",
+							"name": "Delete empty file",
 							"type": "Delete",
 							"dependsOn": [],
 							"policy": {
@@ -168,16 +87,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "Parquet_dynamic_dataset",
+									"referenceName": "ls_DelimitedText",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bornze",
-										"folder": {
-											"value": "@pipeline().parameters.table",
-											"type": "Expression"
-										},
-										"file": {
-											"value": "@concat(pipeline().parameters.table,'_',variables('current'))",
+										"folder": "sqlload",
+										"filename": {
+											"value": "@variables('file_nme')",
 											"type": "Expression"
 										}
 									}
@@ -200,11 +115,11 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "update_last_cdc",
+							"name": "Copy data for update the lastload file",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Max_cdc_Script",
+									"activity": "Script activity to get the max",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -223,9 +138,9 @@
 									"type": "JsonSource",
 									"additionalColumns": [
 										{
-											"name": "cdc",
+											"name": "lastload",
 											"value": {
-												"value": "@activity('Max_cdc_Script').output.resultSets[0].rows[0].max_date",
+												"value": "@activity('Script activity to get the max').output.resultSets[0].rows[0].max_date",
 												"type": "Expression"
 											}
 										}
@@ -255,11 +170,8 @@
 									"referenceName": "Json_dynamic_dataset",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bornze",
-										"folder": {
-											"value": "@{pipeline().parameters.table}_cdc",
-											"type": "Expression"
-										},
+										"container": "monitor",
+										"folder": "emptyjson",
 										"file": "empty.json"
 									}
 								}
@@ -269,18 +181,15 @@
 									"referenceName": "Json_dynamic_dataset",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bornze",
-										"folder": {
-											"value": "@{pipeline().parameters.table}_cdc",
-											"type": "Expression"
-										},
-										"file": "cdc.json"
+										"container": "monitor",
+										"folder": "lastload",
+										"file": "lastload"
 									}
 								}
 							]
 						},
 						{
-							"name": "Max_cdc_Script",
+							"name": "Script activity to get the max",
 							"type": "Script",
 							"dependsOn": [],
 							"policy": {
@@ -300,7 +209,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "select max(@{pipeline().parameters.cdc_col}) as max_date from @{pipeline().parameters.schema}.@{pipeline().parameters.table}",
+											"value": "\nselect max(booking_date) as max_date from dbo.FactBookings",
 											"type": "Expression"
 										}
 									}
@@ -310,25 +219,91 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Copy data for sql to blob",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Lookup for retrive the value from lastloadfile",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable to check the currebt time",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select * from dbo.FactBookings where booking_date>'@{activity('Lookup for retrive the value from lastloadfile').output.value[0].lastload}' and booking_date<='@{variables('v_now')}'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Azure_Sql_dataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ls_DelimitedText",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "sqlload",
+							"filename": {
+								"value": "@variables('file_nme')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
-		"parameters": {
-			"schema": {
-				"type": "string"
-			},
-			"table": {
-				"type": "string"
-			},
-			"cdc_col": {
-				"type": "string"
-			},
-			"form_date": {
-				"type": "string"
-			}
-		},
 		"variables": {
-			"current": {
+			"v_now": {
 				"type": "String"
+			},
+			"file_nme": {
+				"type": "String",
+				"defaultValue": "@concat('flight.csv','_',utcNow())"
 			}
 		},
 		"annotations": []

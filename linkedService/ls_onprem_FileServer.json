@@ -1,0 +1,17 @@
+{
+	"name": "ls_onprem_FileServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "C:\\My_files",
+			"userId": "desktop-bv8esh1\\amrit",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1NTA5ZDUwMC1mMTAyLTQzZjItYWJhNS1mODgzYTBhYzExOTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

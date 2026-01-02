@@ -1,0 +1,20 @@
+{
+	"name": "ds_api_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure_DataLake_lnk",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "DimAirpot.json",
+				"folderPath": "github",
+				"fileSystem": "bronzedata"
+			}
+		},
+		"schema": {}
+	}
+}

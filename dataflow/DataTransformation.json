@@ -75,7 +75,7 @@
 				"          Column_2 as string,",
 				"          Column_3 as string",
 				"     ),",
-				"     allowSchemaDrift: true,",
+				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> FackBooking",
 				"source(allowSchemaDrift: true,",

@@ -46,7 +46,10 @@
 					"name": "derivedColumnCountry"
 				},
 				{
-					"name": "select1"
+					"name": "DepartureTimestamp"
+				},
+				{
+					"name": "GenderFlag"
 				}
 			],
 			"scriptLines": [
@@ -104,7 +107,16 @@
 				"          arrival_time",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> DepartureTimestamp",
+				"DimPassenger select(mapColumn(",
+				"          passenger_id,",
+				"          full_name,",
+				"          genderFlag = gender,",
+				"          age,",
+				"          country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> GenderFlag"
 			]
 		}
 	}

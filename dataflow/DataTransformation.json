@@ -62,6 +62,9 @@
 				},
 				{
 					"name": "LastNameTransformation"
+				},
+				{
+					"name": "castingticketcost"
 				}
 			],
 			"scriptLines": [
@@ -132,7 +135,11 @@
 				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag",
 				"ReplaceForGendefFlag filter(age>=25) ~> Agefilter",
 				"Agefilter derive(firstName = split(full_name,\" \")[1]) ~> FirstNameTransformation",
-				"FirstNameTransformation derive(LastName = split(full_name,\" \")[2]) ~> LastNameTransformation"
+				"FirstNameTransformation derive(LastName = split(full_name,\" \")[2]) ~> LastNameTransformation",
+				"FackBooking cast(output(",
+				"          ticket_cost as integer",
+				"     ),",
+				"     errors: true) ~> castingticketcost"
 			]
 		}
 	}

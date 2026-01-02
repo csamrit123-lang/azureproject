@@ -65,6 +65,9 @@
 				},
 				{
 					"name": "castingticketcost"
+				},
+				{
+					"name": "derivedColumnAirportName"
 				}
 			],
 			"scriptLines": [
@@ -110,7 +113,13 @@
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> FackBooking",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          airport_id as short,",
+				"          airport_name as string,",
+				"          city as string,",
+				"          country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> DimAirport",
@@ -139,7 +148,8 @@
 				"FackBooking cast(output(",
 				"          ticket_cost as integer",
 				"     ),",
-				"     errors: true) ~> castingticketcost"
+				"     errors: true) ~> castingticketcost",
+				"DimAirport derive(airport_name = upper(airport_name)) ~> derivedColumnAirportName"
 			]
 		}
 	}

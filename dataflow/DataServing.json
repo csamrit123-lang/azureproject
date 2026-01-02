@@ -16,13 +16,6 @@
 						"referenceName": "Azure_DataLake_lnk",
 						"type": "LinkedServiceReference"
 					},
-					"name": "DimFlight"
-				},
-				{
-					"linkedService": {
-						"referenceName": "Azure_DataLake_lnk",
-						"type": "LinkedServiceReference"
-					},
 					"name": "FactBooking"
 				}
 			],
@@ -67,12 +60,6 @@
 				"     format: 'delta',",
 				"     fileSystem: 'silverdata',",
 				"     folderPath: 'DimAirline') ~> DimAirline",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     format: 'delta',",
-				"     fileSystem: 'silverdata',",
-				"     folderPath: 'DimFlight') ~> DimFlight",
 				"source(output(",
 				"          booking_id as short,",
 				"          passenger_id as short,",

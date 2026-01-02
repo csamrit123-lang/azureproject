@@ -86,6 +86,14 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"dataset": {
+									"referenceName": "ls_DelimitedText",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder": "sqlload",
+										"filename": "@variables('file_nme')"
+									}
+								},
 								"logStorageSettings": {
 									"linkedServiceName": {
 										"referenceName": "Azure_DataLake_lnk",

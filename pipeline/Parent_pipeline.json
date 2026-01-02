@@ -169,7 +169,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Factbooking",
-					"value": "flight.csv_2026-01-02T14:06:29.1740793Z\n"
+					"value": {
+						"value": "@trim('flight.csv_2026-01-02T14:06:29.1740793Z')",
+						"type": "Expression"
+					}
 				}
 			},
 			{

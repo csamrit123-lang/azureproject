@@ -58,7 +58,10 @@
 					"name": "Agefilter"
 				},
 				{
-					"name": "FullNameTransformation"
+					"name": "FirstNameTransformation"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -128,7 +131,8 @@
 				"     skipDuplicateMapOutputs: true) ~> GenderFlag",
 				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag",
 				"ReplaceForGendefFlag filter(age>=25) ~> Agefilter",
-				"Agefilter derive(first = split(full_name,\" \")[1]) ~> FullNameTransformation"
+				"Agefilter derive(firstName = split(full_name,\" \")[1]) ~> FirstNameTransformation",
+				"FirstNameTransformation derive(LastName = split(full_name,\" \")[2]) ~> derivedColumn1"
 			]
 		}
 	}

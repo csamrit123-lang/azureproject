@@ -24,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "DimPassenger"
+				},
+				{
+					"dataset": {
+						"referenceName": "ls_DelimitedText",
+						"type": "DatasetReference"
+					},
+					"name": "FackBooking"
 				}
 			],
 			"sinks": [],
@@ -38,13 +45,24 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> DimAirline",
 				"source(output(",
-				"          Column_1 as string,",
-				"          Column_2 as string,",
-				"          Column_3 as string",
+				"          flight_id as short,",
+				"          flight_number as string,",
+				"          departure_time as string,",
+				"          arrival_time as string",
 				"     ),",
-				"     allowSchemaDrift: true,",
+				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Dimflight",
+				"source(output(",
+				"          passenger_id as short,",
+				"          full_name as string,",
+				"          gender as string,",
+				"          age as short,",
+				"          country as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DimPassenger",
 				"source(output(",
 				"          Column_1 as string,",
 				"          Column_2 as string,",
@@ -52,7 +70,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> DimPassenger"
+				"     ignoreNoFilesFound: false) ~> FackBooking"
 			]
 		}
 	}

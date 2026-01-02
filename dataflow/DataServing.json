@@ -36,6 +36,9 @@
 				},
 				{
 					"name": "aggregation"
+				},
+				{
+					"name": "window1"
 				}
 			],
 			"scriptLines": [
@@ -96,7 +99,10 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 aggregate(groupBy(airline_name),",
-				"     Total_Sales = sum(ticket_cost)) ~> aggregation"
+				"     Total_Sales = sum(ticket_cost)) ~> aggregation",
+				"aggregation window(over(Total_Sales),",
+				"     asc(airline_name, true),",
+				"     D_Rnk = rowNumber()) ~> window1"
 			]
 		}
 	}

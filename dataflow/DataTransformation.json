@@ -122,6 +122,14 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DimAirline as string,",
+				"     Dimflight as string,",
+				"     DimPassenger as string,",
+				"     FactBooking as string,",
+				"     OnprimeFolderName as string,",
+				"     NormalFolderName as string",
+				"}",
 				"source(output(",
 				"          airline_id as short,",
 				"          airline_name as string,",

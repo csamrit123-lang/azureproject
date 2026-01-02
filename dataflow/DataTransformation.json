@@ -53,6 +53,12 @@
 				},
 				{
 					"name": "ReplaceForGendefFlag"
+				},
+				{
+					"name": "Agefilter"
+				},
+				{
+					"name": "FullNameTransformation"
 				}
 			],
 			"scriptLines": [
@@ -120,7 +126,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> GenderFlag",
-				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag"
+				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag",
+				"ReplaceForGendefFlag filter(age>=25) ~> Agefilter",
+				"Agefilter derive(full_name = split(full_name,\" \")) ~> FullNameTransformation"
 			]
 		}
 	}

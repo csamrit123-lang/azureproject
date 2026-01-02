@@ -75,6 +75,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SQLToDataLake_pipeline",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			},
@@ -284,6 +288,83 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataTransformation",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"DimAirline": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('Airline')",
+									"type": "Expression"
+								}
+							},
+							"Dimflight": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('DimFlight')",
+									"type": "Expression"
+								}
+							},
+							"DimPassenger": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('DimPassenger')",
+									"type": "Expression"
+								}
+							},
+							"FackBooking": {
+								"folder": {
+									"value": "@variables('sqlload')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('DimAirport')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Data flow for Business view creation",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "DataTransformation Data flow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataServing",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"

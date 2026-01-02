@@ -22,6 +22,9 @@
 		},
 		"Azure_Sql_link_properties_typeProperties_userName": {
 			"value": "adminamrit"
+		},
+		"ls_RestService_properties_typeProperties_url": {
+			"value": "https://raw.githubusercontent.com/"
 		}
 	}
 }

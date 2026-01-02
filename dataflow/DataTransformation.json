@@ -43,7 +43,7 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "derivedColumnforupper"
+					"name": "derivedColumnCountry"
 				}
 			],
 			"scriptLines": [
@@ -93,7 +93,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> DimAirport",
-				"DimAirline derive(country = upper(country)) ~> derivedColumnforupper"
+				"DimAirline derive(country = upper(country)) ~> derivedColumnCountry"
 			]
 		}
 	}

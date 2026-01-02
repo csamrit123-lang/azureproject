@@ -50,6 +50,9 @@
 				},
 				{
 					"name": "GenderFlag"
+				},
+				{
+					"name": "ReplaceForGendefFlag"
 				}
 			],
 			"scriptLines": [
@@ -116,7 +119,8 @@
 				"          country",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> GenderFlag"
+				"     skipDuplicateMapOutputs: true) ~> GenderFlag",
+				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag"
 			]
 		}
 	}

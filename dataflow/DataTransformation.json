@@ -61,7 +61,7 @@
 					"name": "FirstNameTransformation"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "LastNameTransformation"
 				}
 			],
 			"scriptLines": [
@@ -132,7 +132,7 @@
 				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag",
 				"ReplaceForGendefFlag filter(age>=25) ~> Agefilter",
 				"Agefilter derive(firstName = split(full_name,\" \")[1]) ~> FirstNameTransformation",
-				"FirstNameTransformation derive(LastName = split(full_name,\" \")[2]) ~> derivedColumn1"
+				"FirstNameTransformation derive(LastName = split(full_name,\" \")[2]) ~> LastNameTransformation"
 			]
 		}
 	}

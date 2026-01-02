@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Pipeline1",
+				"name": "ExecuteOnprem Pipeline",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"policy": {
@@ -13,6 +13,70 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "on_prime_ingestion_pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"file_name": {
+							"value": "@pipeline().parameters.file_name",
+							"type": "Expression"
+						},
+						"p_Airline": {
+							"value": "@pipeline().parameters.p_Airline",
+							"type": "Expression"
+						},
+						"p_flight": {
+							"value": "@pipeline().parameters.p_flight",
+							"type": "Expression"
+						},
+						"p_passenger": {
+							"value": "@pipeline().parameters.p_passenger",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "ExecuteAPI Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteOnprem Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Api_Ingestion_pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute Incremental Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteAPI Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SQLToDataLake_pipeline",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -216,12 +280,6 @@
 						"treatBooleanAsNumber": false
 					}
 				}
-			}
-		},
-		"variables": {
-			"file_name": {
-				"type": "String",
-				"defaultValue": "[{\"file_name\":\"DimAirline.csv\"},{\"file_name\":\"DimFlight.csv\"},{\"file_name\":\"DimPassenger.csv\"}]"
 			}
 		},
 		"annotations": []

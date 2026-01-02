@@ -97,10 +97,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Airline",
+					"value": "DimAirline.csv"
+				}
 			},
 			{
-				"name": "Set variable for Airlines_copy2",
+				"name": "Set variable for Flight",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -114,10 +118,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DimFlight",
+					"value": "DimFlight.csv"
+				}
 			},
 			{
-				"name": "Set variable for Airlines_copy2_copy1",
+				"name": "Set variable for Passenger",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -131,10 +139,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DimPassenger",
+					"value": "DimPassenger.csv"
+				}
 			},
 			{
-				"name": "Set variable for Airlines_copy2_copy1_copy1",
+				"name": "Set variable for FactBooking",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -148,7 +160,53 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Factbooking",
+					"value": "flight.csv_2026-01-02T14:06:29.1740793Z\n"
+				}
+			},
+			{
+				"name": "Set variable for onprimeFolder",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Execute Incremental Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "onpremise",
+					"value": "onpremise"
+				}
+			},
+			{
+				"name": "Set variable for NormalFolder",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Execute Incremental Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sqlload",
+					"value": "sqlload"
+				}
 			}
 		],
 		"parameters": {
@@ -348,6 +406,26 @@
 						"treatBooleanAsNumber": false
 					}
 				}
+			}
+		},
+		"variables": {
+			"Airline": {
+				"type": "String"
+			},
+			"DimFlight": {
+				"type": "String"
+			},
+			"DimPassenger": {
+				"type": "String"
+			},
+			"Factbooking": {
+				"type": "String"
+			},
+			"sqlload": {
+				"type": "String"
+			},
+			"onpremise": {
+				"type": "String"
 			}
 		},
 		"annotations": []

@@ -29,7 +29,7 @@
 								"source": {
 									"type": "DelimitedTextSource",
 									"storeSettings": {
-										"type": "FileServerReadSettings",
+										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
 										"enablePartitionDiscovery": false
 									},
@@ -53,7 +53,25 @@
 									"value": "@if(equals(item().file_name,'DimAirline.csv'),pipeline().parameters.p_Airline,if(equals(item().file_name,'DimFlight.csv'),pipeline().parameters.p_flight,pipeline().parameters.p_passenger))",
 									"type": "Expression"
 								}
-							}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_onprem",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_file_name": "@item().file_name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ls_dest_lnk",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_filename": "@item().file_name"
+									}
+								}
+							]
 						}
 					]
 				}

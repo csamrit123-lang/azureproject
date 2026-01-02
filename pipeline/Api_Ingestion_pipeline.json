@@ -34,7 +34,19 @@
 						}
 					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "Rest_Resource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_api_sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []

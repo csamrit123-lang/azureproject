@@ -81,6 +81,23 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Set variable for Airlines",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Execute Incremental Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"parameters": {

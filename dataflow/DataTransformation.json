@@ -128,7 +128,7 @@
 				"     skipDuplicateMapOutputs: true) ~> GenderFlag",
 				"GenderFlag derive(genderFlag = replace(replace(genderFlag,'M','Male'),'F','Female')) ~> ReplaceForGendefFlag",
 				"ReplaceForGendefFlag filter(age>=25) ~> Agefilter",
-				"Agefilter derive(full_name = split(full_name,\" \")) ~> FullNameTransformation"
+				"Agefilter derive(first = split(full_name,\" \")[1]) ~> FullNameTransformation"
 			]
 		}
 	}

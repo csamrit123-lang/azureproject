@@ -207,6 +207,136 @@
 					"variableName": "sqlload",
 					"value": "sqlload"
 				}
+			},
+			{
+				"name": "Set variable for Airport",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Execute Incremental Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DimAirport",
+					"value": "DimAirpot.json\n"
+				}
+			},
+			{
+				"name": "DataTransformation Data flow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Set variable for Airlines",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for Flight",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for Passenger",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for FactBooking",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for Airport",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for onprimeFolder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable for NormalFolder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataTransformation",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"DimAirline": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('Airline')",
+									"type": "Expression"
+								}
+							},
+							"Dimflight": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('DimFlight')",
+									"type": "Expression"
+								}
+							},
+							"DimPassenger": {
+								"folder": {
+									"value": "@variables('onpremise')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('DimPassenger')",
+									"type": "Expression"
+								}
+							},
+							"FackBooking": {
+								"folder": {
+									"value": "@variables('sqlload')",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@variables('Factbooking')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"parameters": {
@@ -425,6 +555,9 @@
 				"type": "String"
 			},
 			"onpremise": {
+				"type": "String"
+			},
+			"DimAirport": {
 				"type": "String"
 			}
 		},

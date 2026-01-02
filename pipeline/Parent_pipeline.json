@@ -5,8 +5,6 @@
 			{
 				"name": "ExecuteOnprem Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
@@ -41,8 +39,6 @@
 			{
 				"name": "ExecuteAPI Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ExecuteOnprem Pipeline",
@@ -66,8 +62,6 @@
 			{
 				"name": "Execute Incremental Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ExecuteAPI Pipeline",

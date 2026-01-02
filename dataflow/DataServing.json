@@ -30,6 +30,12 @@
 			"transformations": [
 				{
 					"name": "Airlinejoin"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregation"
 				}
 			],
 			"scriptLines": [
@@ -72,7 +78,25 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> Airlinejoin"
+				"     broadcast: 'auto')~> Airlinejoin",
+				"Airlinejoin select(mapColumn(",
+				"          booking_id,",
+				"          passenger_id,",
+				"          flight_id,",
+				"          airline_id = FactBooking@airline_id,",
+				"          origin_airport_id,",
+				"          destination_airport_id,",
+				"          booking_date,",
+				"          ticket_cost,",
+				"          flight_duration_mins,",
+				"          checkin_status,",
+				"          airline_name,",
+				"          country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(airline_name),",
+				"     Total_Sales = sum(ticket_cost)) ~> aggregation"
 			]
 		}
 	}
